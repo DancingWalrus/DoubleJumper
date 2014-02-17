@@ -36,4 +36,16 @@ public class Main extends JavaPlugin
       }
     }
   }
+  @EventHandler
+  public void onPlayerToggleFlight(PlayerToggleFlightEvent event)
+  {
+    Player player = event.getPlayer();
+    boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
+    if ((canJump) && (player.getGameMode() != GameMode.CREATIVE)) {
+      event.setCancelled(true);
+      player.setAllowFlight(false);
+      player.setFlying(false);
+      player.setVelocity(player.getLocation().getDirection().multiply(getConfig().getDouble("settings.velocityMultiply")).setY(getConfig().getDouble("settings.velocityHeight")));
+    }
+  }
 
