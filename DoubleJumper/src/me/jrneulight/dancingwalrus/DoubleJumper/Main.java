@@ -48,4 +48,54 @@ public class Main extends JavaPlugin
       player.setVelocity(player.getLocation().getDirection().multiply(getConfig().getDouble("settings.velocityMultiply")).setY(getConfig().getDouble("settings.velocityHeight")));
     }
   }
+  @EventHandler
+  public void onPlayerMove(PlayerMoveEvent event) {
+    Player player = event.getPlayer();
+    boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
+    if ((!canJump) && (player.getGameMode() != GameMode.CREATIVE))
+      player.setFlying(false);
+    else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()))
+      player.setAllowFlight(true);
+  }
+
+  @EventHandler
+  public void onEntityDamage(EntityDamageEvent event)
+  {
+    if (((event.getEntity() instanceof Player)) && 
+      (event.getCause() == EntityDamageEvent.DamageCause.FALL))
+      event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPlayerJoin(PlayerJoinEvent event)
+  {
+    if (getConfig().getBoolean("settings.speedBoost"))
+      event.getPlayer().setWalkSpeed((float)getConfig().getDouble("settings.speed"));
+  }
+
+  public void sendHelpMessage(CommandSender sender)
+  {
+    sender.sendMessage("§bDoubleJumper || By DancingWalrus and Jrneulight");
+    sender.sendMessage("§bCommands:");
+    sender.sendMessage("§b/doublejumper reload");
+  }
+
+  public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    if (cmd.getName().equalsIgnoreCase("doublejumper")) {
+      if (args.length == 0)
+        sendHelpMessage(sender);
+      else if (args[0].equalsIgnoreCase("reload")) {
+        if (sender.hasPermission("doublejumper.reload")) {
+          reloadConfig();
+          sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.reloadMessage")));
+        } else {
+          sender.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.noPermMessage")));
+        }
+      }
+      else sendHelpMessage(sender);
+    }
+
+    return true;
+  }
+}
 
