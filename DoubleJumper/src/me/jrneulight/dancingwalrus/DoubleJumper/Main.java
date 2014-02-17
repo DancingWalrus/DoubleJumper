@@ -1,10 +1,26 @@
 package me.jrneulight.dancingwalrus.DoubleJumper;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.List;
 
-public class Main extends JavaPlugin
-  implements Listener
-{
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.ChatColor;
+
+public class Main extends JavaPlugin implements Listener {
   public void onEnable()
   {
     getConfig().options().copyDefaults(true);
@@ -18,8 +34,8 @@ public class Main extends JavaPlugin
       (event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK))) {
       Player player = event.getPlayer();
       ItemStack item = event.getItem();
-      if (item.getTypeId() == getConfig().getInt("settings.toggleTool")) {
-        List enabled = getConfig().getStringList("settings.enabled");
+      if (item.getType() == Material.getMaterial(getConfig().getString("settings.toggleTool"))) {
+        List<String> enabled = getConfig().getStringList("settings.enabled");
         if (enabled.contains(player.getName())) {
           enabled.remove(player.getName());
           getConfig().set("settings.enabled", enabled);
@@ -75,9 +91,9 @@ public class Main extends JavaPlugin
 
   public void sendHelpMessage(CommandSender sender)
   {
-    sender.sendMessage("§bDoubleJumper || By DancingWalrus and Jrneulight");
-    sender.sendMessage("§bCommands:");
-    sender.sendMessage("§b/doublejumper reload");
+    sender.sendMessage("��bDoubleJumper || By DancingWalrus and Jrneulight");
+    sender.sendMessage("��bCommands:");
+    sender.sendMessage("��b/doublejumper reload");
   }
 
   public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
