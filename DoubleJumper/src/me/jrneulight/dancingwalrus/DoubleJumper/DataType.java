@@ -1,3 +1,5 @@
+package me.jrneulight.dancingwalrus.DoubleJumper;
+
 import java.util.HashMap;
 import java.util.Map;
  

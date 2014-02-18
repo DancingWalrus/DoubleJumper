@@ -1,3 +1,5 @@
+package me.jrneulight.dancingwalrus.DoubleJumper;
+
 import org.bukkit.Bukkit;
  
 /**

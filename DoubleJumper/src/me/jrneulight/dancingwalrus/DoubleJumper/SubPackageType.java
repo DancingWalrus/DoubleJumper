@@ -1,3 +1,5 @@
+package me.jrneulight.dancingwalrus.DoubleJumper;
+
 /**
  * This class is part of the ReflectionHandler and follows the same usage conditions
  *  
