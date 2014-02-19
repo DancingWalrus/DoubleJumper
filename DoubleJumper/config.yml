@@ -11,5 +11,5 @@ settings:
   toggleTool: 280
   # Will Disable All Fall Damage on Server
   damageEnabled: false
-  worlds-enabled:
-      - all
+  worldsEnabled:
+  - all
