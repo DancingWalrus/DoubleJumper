@@ -1,0 +1,14 @@
+name: DoubleJumper
+version: 2.0
+description: Simple Double-Jumping!
+author: [jrneulight,DancingWalrus]
+main: me.jrneulight.doublejumper.Main
+permissions:
+  doublejump.use:
+    description: Allows you to double jump
+    default: true
+commands:
+    doublejumper:
+        description: DoubleJumper Help!
+        usage: /<command>
+        permission: midastouch.midastoggle

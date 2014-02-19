@@ -56,7 +56,7 @@ public class Main extends JavaPlugin implements Listener {
   {
     Player player = event.getPlayer();
     boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
-    if ((canJump) && (player.getGameMode() != GameMode.CREATIVE)) {
+    if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all")) {
       event.setCancelled(true);
       player.setAllowFlight(false);
       player.setFlying(false);
@@ -68,17 +68,19 @@ public class Main extends JavaPlugin implements Listener {
     Player player = event.getPlayer();
     boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
     if ((!canJump) && (player.getGameMode() != GameMode.CREATIVE))
-      player.setFlying(false);
-    else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()))
+      if (getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all")) {
+    	player.setFlying(false);
+      }
+    else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()) && getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all"))
       player.setAllowFlight(true);
   }
 
   @EventHandler
   public void onEntityDamage(EntityDamageEvent event)
   {
-    if (((event.getEntity() instanceof Player)) && 
-      (event.getCause() == EntityDamageEvent.DamageCause.FALL))
+    if (((event.getEntity() instanceof Player)) && (event.getCause() == EntityDamageEvent.DamageCause.FALL) && getConfig().getBoolean("settings.damageEnabled"))  {
       event.setCancelled(true);
+      }
   }
 
   @EventHandler

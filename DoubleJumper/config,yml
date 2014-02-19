@@ -1,0 +1,15 @@
+general:
+  reloadMessage: '&eSuccesfully reloaded DoubleJump!'
+  noPermMessage: '&4You do not have access to that command.'
+  enabledMessage: '&eYou enabled double jumping!'
+  disabledMessage: '&eYou disabled double jumping!'
+settings:
+  speedBoost: true
+  speed: 0.25
+  velocityMultiply: 1.6
+  velocityHeight: 1.0
+  toggleTool: 280
+  # Will Disable All Fall Damage on Server
+  damageEnabled: false
+  worlds-enabled:
+      - all
