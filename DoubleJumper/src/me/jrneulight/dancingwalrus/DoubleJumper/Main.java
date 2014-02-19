@@ -1,6 +1,7 @@
 package me.jrneulight.dancingwalrus.DoubleJumper;
 
 import java.util.List;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,37 +21,38 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
-	@Override
-	public void onEnable()
+  public void onEnable()
   {
     saveDefaultConfig();
     saveConfig();
     getServer().getPluginManager().registerEvents(this, this);
   }
 
-  @EventHandler
-  public void onPlayerInteract(PlayerInteractEvent event) {
-    if ((event.hasItem()) && ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK))) {
-      Player player = event.getPlayer();
-      ItemStack item = event.getItem();
-      if (item.getType().equals(Material.getMaterial(getConfig().getString("settings.toggleTool")))) {
-        List<String> enabled = getConfig().getStringList("settings.enabled");
-        if (enabled.contains(player.getName())) {
-          enabled.remove(player.getName());
-          getConfig().set("settings.enabled", enabled);
-          saveConfig();
-          player.getItemInHand().removeEnchantment(Enchantment.ARROW_INFINITE);
-          player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.disabledMessage")));
-        } else {
-          enabled.add(player.getName());
-          getConfig().set("settings.enabled", enabled);
-          saveConfig();
-          player.getItemInHand().addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 10);
-          player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.enabledMessage")));
+  @SuppressWarnings("deprecation")
+@EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+      if ((event.hasItem()) && (
+        (event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK))) {
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        if (item.getTypeId() == getConfig().getInt("settings.toggleTool")) {
+          List<String> enabled = getConfig().getStringList("settings.enabled");
+          if (enabled.contains(player.getName())) {
+            enabled.remove(player.getName());
+            getConfig().set("settings.enabled", enabled);
+            saveConfig();
+            player.getItemInHand().removeEnchantment(Enchantment.ARROW_INFINITE);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.disabledMessage")));
+          } else {
+            enabled.add(player.getName());
+            getConfig().set("settings.enabled", enabled);
+            saveConfig();
+            player.getItemInHand().addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 10);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("general.enabledMessage")));
+          }
         }
       }
     }
-  }
   @EventHandler
   public void onPlayerToggleFlight(PlayerToggleFlightEvent event)
   {
@@ -68,7 +70,9 @@ public class Main extends JavaPlugin implements Listener {
     Player player = event.getPlayer();
     boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
     if ((!canJump) && (player.getGameMode() != GameMode.CREATIVE))
+      if (getConfig().getStringList("settings.worldsEnabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worldsEnabled").contains("all") && player.hasPermission("doublejumper.use")) {
     	player.setFlying(false);
+      }
     else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()) && getConfig().getStringList("settings.worldsEnabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worldsEnabled").contains("all") && player.hasPermission("doublejumper.use"))
       player.setAllowFlight(true);
   }
@@ -76,7 +80,7 @@ public class Main extends JavaPlugin implements Listener {
   @EventHandler
   public void onEntityDamage(EntityDamageEvent event)
   {
-    if (((event.getEntity() instanceof Player)) && (event.getCause() == EntityDamageEvent.DamageCause.FALL) && getConfig().getBoolean("settings.damageEnabled"))  {
+    if (((event.getEntity() instanceof Player)) && (event.getCause() == EntityDamageEvent.DamageCause.FALL) && !(getConfig().getBoolean("settings.damageEnabled")))  {
       event.setCancelled(true);
       }
   }
