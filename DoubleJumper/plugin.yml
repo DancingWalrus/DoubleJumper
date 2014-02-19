@@ -2,7 +2,7 @@ name: DoubleJumper
 version: 2.0
 description: Simple Double-Jumping!
 author: [jrneulight,DancingWalrus]
-main: me.jrneulight.dancingwalrus.doublejumper.Main
+main: me.jrneulight.dancingwalrus.DoubleJumper.Main
 permissions:
   doublejump.use:
     description: Allows you to double jump
