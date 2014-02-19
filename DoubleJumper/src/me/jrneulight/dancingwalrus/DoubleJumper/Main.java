@@ -56,7 +56,7 @@ public class Main extends JavaPlugin implements Listener {
   {
     Player player = event.getPlayer();
     boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
-    if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all")) {
+    if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all") && player.hasPermission("doublejumper.use")) {
       event.setCancelled(true);
       player.setAllowFlight(false);
       player.setFlying(false);
@@ -68,10 +68,10 @@ public class Main extends JavaPlugin implements Listener {
     Player player = event.getPlayer();
     boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
     if ((!canJump) && (player.getGameMode() != GameMode.CREATIVE))
-      if (getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all")) {
+      if (getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all") && player.hasPermission("doublejumper.use")) {
     	player.setFlying(false);
       }
-    else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()) && getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all"))
+    else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()) && getConfig().getStringList("settings.worlds-enabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worlds-enabled").contains("all") && player.hasPermission("doublejumper.use"))
       player.setAllowFlight(true);
   }
 
