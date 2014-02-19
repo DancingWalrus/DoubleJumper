@@ -30,11 +30,10 @@ public class Main extends JavaPlugin implements Listener {
 
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
-    if ((event.hasItem()) && (
-      (event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK))) {
+    if ((event.hasItem()) && ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK))) {
       Player player = event.getPlayer();
       ItemStack item = event.getItem();
-      if (item.getType() == Material.getMaterial(getConfig().getString("settings.toggleTool"))) {
+      if (item.getType().equals(Material.getMaterial(getConfig().getString("settings.toggleTool")))) {
         List<String> enabled = getConfig().getStringList("settings.enabled");
         if (enabled.contains(player.getName())) {
           enabled.remove(player.getName());
@@ -69,9 +68,7 @@ public class Main extends JavaPlugin implements Listener {
     Player player = event.getPlayer();
     boolean canJump = getConfig().getStringList("settings.enabled").contains(player.getName());
     if ((!canJump) && (player.getGameMode() != GameMode.CREATIVE))
-      if (getConfig().getStringList("settings.worldsEnabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worldsEnabled").contains("all") && player.hasPermission("doublejumper.use")) {
     	player.setFlying(false);
-      }
     else if ((canJump) && (player.getGameMode() != GameMode.CREATIVE) && (player.getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR) && (!player.isFlying()) && getConfig().getStringList("settings.worldsEnabled").contains(player.getWorld().getName()) || getConfig().getStringList("settings.worldsEnabled").contains("all") && player.hasPermission("doublejumper.use"))
       player.setAllowFlight(true);
   }
