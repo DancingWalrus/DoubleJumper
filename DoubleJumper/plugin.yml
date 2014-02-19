@@ -11,4 +11,3 @@ commands:
     doublejumper:
         description: DoubleJumper Help!
         usage: /<command>
-        permission: midastouch.midastoggle
