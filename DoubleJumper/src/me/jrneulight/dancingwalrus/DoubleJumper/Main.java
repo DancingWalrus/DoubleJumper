@@ -22,7 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin implements Listener {
   public void onEnable()
   {
-    getConfig().options().copyDefaults(true);
+    saveDefaultConfig();
     saveConfig();
     getServer().getPluginManager().registerEvents(this, this);
   }
